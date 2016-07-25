@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Job Search</title>
+        <!-- Bootstrap core CSS -->
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="style.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    </head>
+    <body>
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3 text-center lead">
+                <label class="control-label heading text-center">Job Number Search</label>
+                <p class="p" style="display: block;">Enter full 6 digit job number</p>
+                <input type="search" id="searchtext" class="form-control search-field" placeholder="Ex. 033333">
+                <button type="button" id="searchbt" class="btn btn-default button" style="display: inline-block;">Search</button>
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+        <div id="status"></div>
+    </body>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.45.min.js"></script>
+    <script type="text/javascript">
+
+// Initialize the Amazon Cognito credentials provider
+	AWS.config.region = 'us-east-1'; // Region
+	
+
+var button = document.getElementById('searchbt');
+var searchtf = document.getElementById('searchtext');
+	
+	var mykey ='index.html'
+	//var mykey ='006039.pdf'
+	//var mykey = searchtf.value;
+
+  
+   var s3 = new AWS.S3();
+  
+	button.addEventListener('click', function() {
+	var mykey = searchtf.value+'.pdf';
+	var params = {
+    Bucket: 'jobscans-docs', 
+	Key: mykey
+	};
+    s3.getObject(params, function (err, data) {
+   
+	if (err) {
+     //  console.log(err); // an error occurred
+	//  document.getElementById('status').innerHTML ='Could not load object from S3';
+	document.getElementById('status').innerHTML ='Sorry, scans for this job cannot be found.';
+        document.getElementById('status').style.textAlign="center";
+	   
+	} else {
+    //console.log(data); // request succeeded
+	    document.getElementById('status').innerHTML =""
+	
+	} 
+	});
+	}, false);
+	
+  
+</script>
+</html>
