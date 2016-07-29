@@ -2,6 +2,8 @@ deployment:
  prod:
   branch: master
   commands:
+  - chown root:www ./deploy_prod.sh
+  - chmod a+x ./deploy_prod.sh
   - ./deploy_prod.sh
 
 test:
